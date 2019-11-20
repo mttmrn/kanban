@@ -3,21 +3,19 @@ import './App.css';
 import fire from './config/auth.js';
 import Home from './home';
 import Login from './login';
+import Column from './components/column'
 
 class App extends Component {
-  constructor() {
-    super();
-    this.state = ({
-      user: 'user',
-    });
-    this.authListener = this.authListener.bind(this);
-  }
+  state = ({
+    user: 'user',
+    columns: []
+  });
 
-  componentDidMount() {
+  componentDidMount = () => {
     this.authListener();
   }
 
-  authListener() {
+  authListener = () => {
     fire.auth().onAuthStateChanged((user) => {
       if (user) {
         this.setState({ user });
@@ -29,10 +27,14 @@ class App extends Component {
     });
   }
 
+  addColumn = () => {
+    this.setState({ columns: [...this.state.columns, <Column />] })
+  }
+
   render() {
     return (
       <div className="App">
-        {this.state.user ? (<Home />) : (<Login />)}
+        {this.state.user ? (<Home addColumn={this.addColumn} columns={this.state.columns} />) : (<Login />)}
       </div>
     );
   }
