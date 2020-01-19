@@ -1,30 +1,21 @@
-import React, { Component } from 'react';
-import fire from './config/auth.js';
-import Header from './components/header.js';
-import Card from './components/card'
+import React, { useState } from "react";
+import fire from "./config/auth.js";
+import Header from "./components/header.js";
+import Card from "./components/card";
+import Column from "./components/column";
 
-
-class Home extends Component {
-
-
-
-    logout = () => {
-        fire.auth().signOut();
-    }
-
-    render() {
-        return (
-            <div className="bg centered">
-                <Header />
-                <div className="centered main">
-                    <Card addColumn={this.props.addColumn} />
-                    {this.props.columns}
-                </div>
-            </div>
-        );
-
-    }
-
-}
+const Home = props => {
+  return (
+    <div className="bg centered">
+      <Header />
+      <div className="centered main">
+        <Card addColumn={props.addColumn} />
+        {props.columns.map((e, i) => (
+          <Column key={i} />
+        ))}
+      </div>
+    </div>
+  );
+};
 
 export default Home;
