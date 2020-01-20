@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import fire from "./config/auth.js";
 import Header from "./components/header.js";
 import Card from "./components/card";
 import Column from "./components/column";

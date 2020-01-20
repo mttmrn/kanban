@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import ColumnInput from "./columnInput";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import db from "../config/db";
+import uuid from "uuid/v4";
 
 const Column = props => {
   const [item, setItem] = useState({
@@ -25,6 +27,24 @@ const Column = props => {
         value: ""
       });
     else {
+      db.collection("users")
+        .doc(localStorage.getItem("email"))
+        .set(
+          {
+            columns: {
+              [uuid()]: {
+                items: [{ id: uuid(), content: item.value }]
+              }
+            }
+          },
+          { merge: true }
+        );
+
+      {
+        /*Sets columns when it should set the array of items, need to
+        fix for both adding columns and adding items */
+      }
+
       setColumnInput({
         item: [...columnInput.item, item.value],
         id: columnInput.id + 1
@@ -83,7 +103,10 @@ const Column = props => {
                 {...droppableProvided.droppableProps}
               >
                 {columnInput.item.map((value, i) => (
-                  <Draggable draggableId={columnInput.id} index={i}>
+                  <Draggable
+                    draggableId={columnInput.item.toString()}
+                    index={i}
+                  >
                     {draggableProvided => (
                       <li
                         {...draggableProvided.draggableProps}
